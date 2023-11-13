@@ -1,0 +1,52 @@
+function setup() {
+  createCanvas(600, 600);
+  background(250);
+}
+
+function draw() {
+  background(220);
+  drawAxes(width / 2, height / 2, 16, 16); // Central axes
+  drawAxes(150, 150, 32, 32); // Top-left axes
+  
+  
+  drawAxes(width - 150, height - 150, 32, 32); // Bottom-right axes
+  maskCircle(width / 2, height / 2, 300); // Mask the area outside the circle
+}
+
+function drawAxes(x, y, w, h) {
+  stroke(0);
+  let unit = 10; // Define the size of one unit on the axes
+
+  // Draw X-axis
+  line(x - w * unit, y, x + w * unit, y);
+  // Draw Y-axis
+  line(x, y - h * unit, x, y + h * unit);
+
+  // Draw ticks on X-axis and connect them to the corresponding points on Y-axis
+  for (let i = -w; i <= w; i++) {
+    let tickX = x + i * unit;
+    let correspondingYPositive = y - (w - Math.abs(i)) * unit;
+    let correspondingYNegative = y + (w - Math.abs(i)) * unit;
+    stroke(150); // Change the color of the connecting lines to make them distinguishable
+    line(tickX, y, x, correspondingYPositive);
+    line(tickX, y, x, correspondingYNegative);
+    stroke(0); // Change the color back to black for the axes and ticks
+  }
+}
+
+function maskCircle(x, y, d) {
+  let maskGraphics = createGraphics(width, height);
+  maskGraphics.background(220);
+  maskGraphics.fill(0);
+  maskGraphics.circle(x, y, d);
+  maskGraphics.loadPixels();
+  loadPixels();
+  for (let i = 0; i < pixels.length; i += 4) {
+    if (maskGraphics.pixels[i] === 220) {
+      pixels[i] = 220;
+      pixels[i + 1] = 220;
+      pixels[i + 2] = 220;
+    }
+  }
+  updatePixels();
+}
