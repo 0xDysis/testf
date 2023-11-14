@@ -1,0 +1,58 @@
+function setup() {
+  createCanvas(600, 600);
+  background(0); // Set the background to black
+}
+
+function draw() {
+  background(0); // Set the background to black
+  stroke(255); // Set the stroke color to white
+  drawAxes(width / 2, height / 2, 16, 16); // Central axes
+  drawAxes(150, 150, 32, 32); // Top-left axes
+  drawAxes(width - 150, height - 150, 32, 32); // Bottom-right axes
+  maskCircle(width / 2, height / 2, 300); // Mask the area outside the circle
+
+  // Draw another set of axes rotated 45 degrees
+  push();
+  translate(width / 2, height / 2);
+  rotate(PI / 4);
+  drawAxes(0, 0, 16, 16);
+  pop();
+}
+
+function drawAxes(x, y, w, h) {
+  stroke(255); // Set the stroke color to white
+  let unit = 10; // Define the size of one unit on the axes
+
+  // Draw X-axis
+  line(x - w * unit, y, x + w * unit, y);
+  // Draw Y-axis
+  line(x, y - h * unit, x, y + h * unit);
+
+  // Draw ticks on X-axis and connect them to the corresponding points on Y-axis
+  for (let i = -w; i <= w; i++) {
+    let tickX = x + i * unit;
+    let correspondingYPositive = y - (w - Math.abs(i)) * unit;
+    let correspondingYNegative = y + (w - Math.abs(i)) * unit;
+    stroke(255); // Change the color of the connecting lines to white
+    line(tickX, y, x, correspondingYPositive);
+    line(tickX, y, x, correspondingYNegative);
+    stroke(255); // Change the color back to white for the axes and ticks
+  }
+}
+
+function maskCircle(x, y, d) {
+  let maskGraphics = createGraphics(width, height);
+  maskGraphics.background(0); // Set the background to black
+  maskGraphics.fill(255); // Set the fill color to white
+  maskGraphics.circle(x, y, d);
+  maskGraphics.loadPixels();
+  loadPixels();
+  for (let i = 0; i < pixels.length; i += 4) {
+    if (maskGraphics.pixels[i] === 0) {
+      pixels[i] = 0;
+      pixels[i + 1] = 0;
+      pixels[i + 2] = 0;
+    }
+  }
+  updatePixels();
+}

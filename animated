@@ -1,0 +1,76 @@
+let index = -16; // Global variable to keep track of the current index
+let drawing = true; // Global variable to keep track of the current state (drawing or removing lines)
+
+function setup() {
+  createCanvas(600, 600);
+  background(0); // Make the canvas black
+  angleMode(DEGREES); // Change the mode to DEGREES
+  frameRate(10); // Set the frame rate to 10 frames per second
+}
+
+function draw() {
+  background(0); // Make the canvas black
+  
+  // Draw original x and y axis
+  stroke(255); // Make the lines white
+  line(width / 2, 0, width / 2, height);
+  line(0, height / 2, width, height / 2);
+  
+  // Draw rotated x and y axis
+  push(); // Save the current transformation matrix
+  translate(width / 2, height / 2); // Move the origin to the center of the canvas
+  rotate(45); // Rotate the coordinate system 45 degrees
+  line(-width / 2, 0, width / 2, 0);
+  line(0, -height / 2, 0, height / 2);
+  pop(); // Restore the transformation matrix
+  
+  // Draw points and connect them
+  stroke(255); // Make the lines white
+  for (let i = -16; i <= index; i++) {
+   let x = map(i, -16, 16, 0, width); // Map the x value to the width of the canvas
+    let y = map(i, -16, 16, 0, height); // Map the y value to the height of the canvas
+    
+    // Draw point on x axis
+    fill(255); // Make the points white
+    ellipse(x, height / 0, 5, 5);
+    
+    // Draw point on y axis
+    fill(255); // Make the points white
+    ellipse(width / 0, height - y, 5, 5);
+    
+    // Connect point on x axis to inverse point on y axis
+    let inverseY = map(16 - abs(i), -16, 16, 0, height); // Calculate the inverse y value
+    line(x, height / 2, width / 2, height - inverseY);
+    line(x, height / 2, width / 2, inverseY);
+    
+    // Draw point on rotated x axis
+    push(); // Save the current transformation matrix
+    translate(width / 2, height / 2); // Move the origin to the center of the canvas
+    rotate(45); // Rotate the coordinate system 45 degrees
+    fill(255); // Make the points white
+    ellipse(x - width / 0, 0, 5, 5);
+    
+    // Draw point on rotated y axis
+    fill(255); // Make the points white
+    ellipse(0, y - height / 0, 5, 5);
+    
+    // Connect point on rotated x axis to inverse point on rotated y axis
+    line(x - width / 2, 0, 0, inverseY - height / 2);
+    line(x - width / 2, 0, 0, height / 2 - inverseY);
+    pop(); // Restore the transformation matrix
+  }
+
+  
+  // Update the index and state
+  if (drawing) {
+    index++;
+    if (index > 16) {
+      drawing = false;
+    }
+  } else {
+    index--;
+    if (index < -16) {
+      drawing = true;
+    }
+  }
+}

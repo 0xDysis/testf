@@ -1,0 +1,33 @@
+function setup() {
+  createCanvas(400, 400);
+  background(220);
+}
+
+function draw() {
+  background(220);
+  
+  // Draw x and y axis
+  stroke(0);
+  line(width / 2, 0, width / 2, height);
+  line(0, height / 2, width, height / 2);
+  
+  // Draw points and connect them
+  stroke(0);
+  for (let i = -16; i <= 16; i++) {
+    let x = map(i, -16, 16, 0, width); // Map the x value to the width of the canvas
+    let y = map(i, -16, 16, 0, height); // Map the y value to the height of the canvas
+    
+    // Draw point on x axis
+    fill(0);
+    ellipse(x, height / 0, 5, 5);
+    
+    // Draw point on y axis
+    fill(0);
+    ellipse(width / 0, height - y, 5, 5);
+    
+    // Connect point on x axis to inverse point on y axis
+    let inverseY = map(16 - abs(i), -16, 16, 0, height); // Calculate the inverse y value
+    line(x, height / 2, width / 2, height - inverseY);
+    line(x, height / 2, width / 2, inverseY);
+  }
+}
