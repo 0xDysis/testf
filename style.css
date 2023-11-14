@@ -1,0 +1,69 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #000; /* Black background */
+    color: #ddd; /* Light grey text */
+    font-family: 'Ubuntu Mono', monospace;
+}
+
+nav {
+    position: fixed; /* Add this line */
+    top: 0; /* Add this line */
+    width: 100%; /* Add this line */
+    background-color: #111111ab; /* Slightly off-black background */
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    z-index: 3;
+}
+nav img {
+    height: 50px; /* Adjust this value to change the size of the logo in the nav bar */
+    width: auto; /* This will maintain the aspect ratio of the logo */
+}
+
+#glCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Add this line */
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+}
+
+.logo-and-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 80%;
+    height: 50%;
+    z-index: 2;
+    flex-direction: row; /* Change this from column to row */
+}
+
+.logo-and-name img {
+    height: 13em; /* Adjust this value to make the logo the same height as the text */
+    width: auto; /* Adjust this value to maintain the aspect ratio of the image */
+    margin-right: 10px; /* Add this to create space between the logo and the text */
+}
+
+.logo-and-name h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 6em; /* Adjust this value as needed */
+}
+
+.tagline {
+    margin-top: 20px;
+    font-size: 1.2em;
+    z-index: 2;
+}
