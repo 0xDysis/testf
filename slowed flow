@@ -1,0 +1,23 @@
+void mainImage( out vec4 fragColor, in vec2 fragCoord ){
+    vec2 uv =  (1.0 * fragCoord - iResolution.xy) / min(iResolution.x, iResolution.y);
+    vec2 uvOriginal = uv; // Store the original uv for later use
+
+    float slowerTime = iTime / 4.0; // Divide iTime by 2 to make the animation slower
+
+    for(float i = 1.0; i < 11.0; i++){
+        uv.x += 0.6 / i * cos(i * 2.5* uv.y + slowerTime);
+        uv.y += 0.6 / i * cos(i * 1.5 * uv.x + slowerTime);
+        
+        // Additional operations
+        uv.x += 0.4 / i * sin(i - 2.5 * uvOriginal.y + slowerTime); // Use sin instead of cos and original uv
+        uv.y += 0.4 / i * sin(i * 1.5 * uvOriginal.x + slowerTime); // Use sin instead of cos and original uv
+
+       uv.y  -= .2;
+    }
+    
+    vec3 color = vec3(0.05)/abs(sin(slowerTime-uv.y-uv.x));
+    float brightness = dot(color, vec3(0.299, 0.587, 0.114)); // Calculate brightness
+    vec3 glow = smoothstep(0.8, 1.0, brightness) * color; // Apply glow to bright areas
+
+    fragColor = vec4(color + glow, 1.0);
+}
